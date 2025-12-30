@@ -1,14 +1,13 @@
 // =============== CONFIG ===============
 const CHANGE_EVERY_MS = 7000; // 7s
-const RSVP_ENDPOINT = "https://formspree.io/f/XXXXXXXX"; // <-- cambia esto (Formspree o Apps Script)
-const RSVP_KEY = "rsvp_aram21_done_v1";
+const RSVP_ENDPOINT = "https://formspree.io/f/XXXXXXXX"; // <-- pon tu URL real
+const RSVP_KEY = "rsvp_aram21_done_v2";
 
 // =============== i18n ===============
 const i18n = {
   es: {
     lang: "es",
     title: "Invitación | Aram 21",
-    pill: "INVITACIÓN ESPECIAL",
     years: "AÑOS",
     subtitle: "Te invito a celebrar mi cumpleaños",
     dayLabel: "DÍA",
@@ -23,26 +22,25 @@ const i18n = {
               llena de luz, risas y buenos momentos.`,
     dateValue: "10 ENE 2026",
     timeValue: "5:00 PM",
-    giftTitle: "REGALO",
-    giftText: "Si gustas, puedes traer un sobre 💛",
+
+    openRsvpBtn: "Confirmar asistencia",
+    confirmedSmall: "✅ Ya confirmaste. ¡Gracias!",
 
     rsvpTitle: "¿Confirmas tu asistencia?",
-    rsvpSub: "Escribe tu nombre y confirma. Solo se pide una vez.",
+    rsvpSub: "Escribe tu nombre y confirma.",
     rsvpNameLabel: "Tu nombre",
     rsvpYes: "Confirmar ✅",
     rsvpNo: "No puedo 😢",
-    rsvpHint: "Tip: si te equivocaste, borra el historial/localStorage del navegador.",
+    rsvpHint: "Si te equivocaste, borra el historial/localStorage del navegador.",
     rsvpThanksYes: "¡Listo! Quedó confirmada tu asistencia ✨",
     rsvpThanksNo: "Listo. Gracias por avisar 🙏",
     rsvpNeedName: "Escribe tu nombre, porfa 🙂",
-    rsvpSending: "Enviando confirmación…",
-    rsvpError: "No se pudo enviar. Intenta de nuevo o revisa tu endpoint."
+    rsvpSending: "Enviando…",
+    rsvpError: "No se pudo enviar. Revisa el endpoint o intenta de nuevo."
   },
-
   en: {
     lang: "en",
     title: "Invitation | Aram 21",
-    pill: "SPECIAL INVITATION",
     years: "YEARS",
     subtitle: "You're invited to celebrate my birthday",
     dayLabel: "DATE",
@@ -57,26 +55,25 @@ const i18n = {
               full of lights, laughs and good vibes.`,
     dateValue: "JAN 10, 2026",
     timeValue: "5:00 PM",
-    giftTitle: "GIFT",
-    giftText: "If you'd like, an envelope gift is welcome 💛",
+
+    openRsvpBtn: "Confirm attendance",
+    confirmedSmall: "✅ You already confirmed. Thank you!",
 
     rsvpTitle: "Can you make it?",
-    rsvpSub: "Type your name and confirm. You’ll only see this once.",
+    rsvpSub: "Type your name and confirm.",
     rsvpNameLabel: "Your name",
     rsvpYes: "Confirm ✅",
     rsvpNo: "Can't make it 😢",
-    rsvpHint: "Tip: if you made a mistake, clear your browser localStorage.",
+    rsvpHint: "If you made a mistake, clear your browser localStorage.",
     rsvpThanksYes: "Done! Your attendance is confirmed ✨",
     rsvpThanksNo: "Got it. Thanks for letting me know 🙏",
     rsvpNeedName: "Please type your name 🙂",
-    rsvpSending: "Sending RSVP…",
-    rsvpError: "Couldn’t send. Try again or check your endpoint."
+    rsvpSending: "Sending…",
+    rsvpError: "Couldn’t send. Check your endpoint or try again."
   },
-
   zh: {
     lang: "zh",
     title: "邀请函 | Aram 21",
-    pill: "特别邀请",
     years: "岁",
     subtitle: "邀请你来参加我的生日聚会",
     dayLabel: "日期",
@@ -91,29 +88,28 @@ const i18n = {
               充满灯光、欢笑与美好回忆。`,
     dateValue: "2026年1月10日",
     timeValue: "下午 5:00",
-    giftTitle: "礼物",
-    giftText: "如愿意，可带信封礼金 💛",
+
+    openRsvpBtn: "确认出席",
+    confirmedSmall: "✅ 你已确认，谢谢！",
 
     rsvpTitle: "你能来吗？",
-    rsvpSub: "请输入名字并确认（只会出现一次）。",
+    rsvpSub: "请输入名字并确认。",
     rsvpNameLabel: "你的名字",
     rsvpYes: "确认 ✅",
     rsvpNo: "不能来 😢",
-    rsvpHint: "提示：如果填错了，请清除浏览器 localStorage。",
+    rsvpHint: "如果填错了，请清除浏览器 localStorage。",
     rsvpThanksYes: "完成！已确认出席 ✨",
     rsvpThanksNo: "收到，谢谢告知 🙏",
     rsvpNeedName: "请先输入名字 🙂",
     rsvpSending: "正在发送…",
-    rsvpError: "发送失败，请重试或检查接口。"
+    rsvpError: "发送失败，请检查接口或重试。"
   }
 };
 
 const order = ["es", "en", "zh"];
 
-// =============== LANGUAGE ROTATION ===============
 function setLang(code){
   const t = i18n[code] || i18n.es;
-
   document.documentElement.lang = t.lang;
   document.title = t.title;
 
@@ -132,13 +128,14 @@ function setLang(code){
 
   document.body.dataset.lang = code;
   localStorage.setItem("lang", code);
+
+  renderConfirmedState();
 }
 
 function bootLanguage(){
   const params = new URLSearchParams(location.search);
-  const forced = params.get("lang"); // ?lang=es|en|zh
+  const forced = params.get("lang");
   const saved = localStorage.getItem("lang");
-
   let idx = order.indexOf(saved || "es");
   if (idx < 0) idx = 0;
 
@@ -154,8 +151,12 @@ function bootLanguage(){
   }, CHANGE_EVERY_MS);
 }
 
-// =============== RSVP (ONE TIME) ===============
+// =============== RSVP ===============
 function $(id){ return document.getElementById(id); }
+
+function currentLang(){
+  return (document.body.dataset.lang || localStorage.getItem("lang") || "es");
+}
 
 function openModal(){
   const modal = $("rsvpModal");
@@ -164,7 +165,6 @@ function openModal(){
   modal.setAttribute("aria-hidden", "false");
   setTimeout(() => $("rsvpName")?.focus(), 150);
 }
-
 function closeModal(){
   const modal = $("rsvpModal");
   if (!modal) return;
@@ -172,13 +172,34 @@ function closeModal(){
   modal.setAttribute("aria-hidden", "true");
 }
 
-function currentLang(){
-  return (document.body.dataset.lang || localStorage.getItem("lang") || "es");
+function alreadyDone(){
+  return !!localStorage.getItem(RSVP_KEY);
+}
+
+function renderConfirmedState(){
+  const lang = currentLang();
+  const t = i18n[lang] || i18n.es;
+
+  const btn = $("openRsvpBtn");
+  const note = $("rsvpSmallNote");
+
+  if (!btn || !note) return;
+
+  if (alreadyDone()){
+    btn.disabled = true;
+    btn.style.opacity = "0.75";
+    btn.style.cursor = "not-allowed";
+    note.textContent = t.confirmedSmall;
+  } else {
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.style.cursor = "pointer";
+    note.textContent = "";
+  }
 }
 
 async function sendRSVP(payload){
-  // Si no configuras endpoint, no revienta: solo simula.
-  if (!RSVP_ENDPOINT || RSVP_ENDPOINT.includes("XXXXXXXX")) {
+  if (!RSVP_ENDPOINT || RSVP_ENDPOINT.includes("XXXXXXXX")){
     return { ok: true, skipped: true };
   }
 
@@ -198,10 +219,6 @@ function markDone(data){
   }));
 }
 
-function alreadyDone(){
-  return !!localStorage.getItem(RSVP_KEY);
-}
-
 async function handleRSVP(attending){
   const lang = currentLang();
   const t = i18n[lang] || i18n.es;
@@ -209,7 +226,7 @@ async function handleRSVP(attending){
   const name = ($("rsvpName")?.value || "").trim();
   const status = $("rsvpStatus");
 
-  if (!name) {
+  if (!name){
     if (status) status.textContent = t.rsvpNeedName;
     return;
   }
@@ -230,29 +247,32 @@ async function handleRSVP(attending){
     const result = await sendRSVP(payload);
 
     markDone({ name, attending, lang, sent: !!result.ok });
-
     if (status) status.textContent = attending ? t.rsvpThanksYes : t.rsvpThanksNo;
 
-    // Cierra solo
+    renderConfirmedState();
+
     setTimeout(() => closeModal(), 900);
-  }catch(e){
+  } catch(e){
     if (status) status.textContent = t.rsvpError;
   }
 }
 
 function bootRSVP(){
-  if (alreadyDone()) return; // ✅ solo una vez
-  openModal();
+  $("openRsvpBtn")?.addEventListener("click", () => {
+    if (alreadyDone()) return;
+    openModal();
+  });
 
   $("btnYes")?.addEventListener("click", () => handleRSVP(true));
   $("btnNo")?.addEventListener("click", () => handleRSVP(false));
 
-  // Cerrar clic fuera (opcional)
   $("rsvpModal")?.addEventListener("click", (e) => {
     if (e.target && e.target.id === "rsvpModal") closeModal();
   });
+
+  renderConfirmedState();
 }
 
-// =============== INIT ===============
+// INIT
 bootLanguage();
 bootRSVP();

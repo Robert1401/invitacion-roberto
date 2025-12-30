@@ -18,16 +18,17 @@
 
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-  <!-- RSVP MODAL (sale una sola vez) -->
+  <!-- MODAL RSVP (se abre con botón de abajo) -->
   <div class="modal" id="rsvpModal" aria-hidden="true">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rsvpTitle">
       <div class="modal-top">
         <div class="modal-badge">🎈</div>
         <h2 id="rsvpTitle" data-i18n="rsvpTitle">¿Confirmas tu asistencia?</h2>
         <p class="modal-sub" data-i18n="rsvpSub">
-          Escribe tu nombre y confirma. Solo se pide una vez.
+          Escribe tu nombre y confirma.
         </p>
       </div>
 
@@ -42,17 +43,18 @@
       </div>
 
       <div class="modal-foot" id="rsvpStatus" aria-live="polite"></div>
-      <div class="modal-hint" data-i18n="rsvpHint">Tip: si te equivocaste, borra el historial/localStorage del navegador.</div>
+      <div class="modal-hint" data-i18n="rsvpHint">
+        Si te equivocaste, borra el historial/localStorage del navegador.
+      </div>
     </div>
   </div>
 
   <main class="poster" role="img" aria-label="Invitación de cumpleaños de Aram">
-
     <div class="bg-glow"></div>
     <div class="frame"></div>
 
+    <!-- quitamos la pill/“SPECIAL INVITATION” -->
     <header class="top">
-      <div class="pill" data-i18n="pill">INVITACIÓN ESPECIAL</div>
       <div class="divider"></div>
     </header>
 
@@ -97,22 +99,28 @@
       </div>
     </section>
 
-    <!-- SOBRE (lluvia de sobres) -->
-    <section class="gift">
-      <div class="gift-title" data-i18n="giftTitle">REGALO</div>
-      <div class="gift-box">
+    <!-- SOBRE (solo icono) -->
+    <section class="gift" aria-label="Regalo">
+      <div class="gift-box gift-only">
         <div class="gift-ico" aria-hidden="true">✉️</div>
-        <div class="gift-text" data-i18n="giftText">Si gustas, puedes traer un sobre 💛</div>
       </div>
     </section>
 
     <footer class="bottom">
       <div class="divider"></div>
+
       <div class="note" data-i18n="footer">
         <strong>Dress code:</strong> cómodo / casual ✨
       </div>
-    </footer>
 
+      <!-- ✅ BOTÓN ABAJO PARA CONFIRMAR -->
+      <div class="rsvp-bar">
+        <button class="btn btn-primary btn-wide" id="openRsvpBtn" type="button" data-i18n="openRsvpBtn">
+          Confirmar asistencia
+        </button>
+        <div class="rsvp-small" id="rsvpSmallNote"></div>
+      </div>
+    </footer>
   </main>
 
   <script src="app.js"></script>
