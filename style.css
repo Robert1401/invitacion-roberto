@@ -18,6 +18,7 @@
 
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
+
 body{
   margin:0;
   display:grid;
@@ -221,14 +222,10 @@ body::after{
   55%{ filter: brightness(1.15); opacity:.90; }
 }
 
-/* “OPEN NEON” cartelito arriba (sin tocar HTML) */
-.poster .top{
-  position:relative;
-  z-index:2;
-}
-.poster .top .pill{
-  position:relative;
-}
+/* “OPEN NEON” cartelito arriba */
+.poster .top{ position:relative; z-index:2; }
+.poster .top .pill{ position:relative; }
+
 .poster .top .pill::before{
   content:"OPEN NEON";
   position:absolute;
@@ -248,7 +245,7 @@ body::after{
   box-shadow: 0 0 20px rgba(255,211,107,.10);
 }
 
-/* Stickers “VIP” y “FAMILY NIGHT” (a los lados) */
+/* Stickers “VIP” y “FAMILY NIGHT” */
 .poster .hero{
   position:relative;
   z-index:2;
@@ -529,4 +526,31 @@ body::after{
 /* Reduce animaciones si el sistema lo pide */
 @media (prefers-reduced-motion: reduce){
   *{ animation:none !important; }
+}
+
+/* ===========================================================
+   ✅ MOBILE FIX: que se vea TODO (sin recortes) en celular
+   =========================================================== */
+
+/* En móviles el body NO debe cortar el contenido */
+@media (max-width: 600px){
+  body{ overflow:auto; }
+}
+
+/* El poster puede scrollear si la pantalla es bajita */
+.poster{
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ajustes finos en pantallas pequeñas */
+@media (max-width: 420px){
+  .poster{ width: 94vw; padding: 22px 16px 16px; }
+  .age{ font-size: 84px; }
+  .age-shadow{ font-size: 92px; }
+  .name{ font-size: 46px; }
+  .chips{ flex-wrap: wrap; }
+  .chip{ width: 100%; }
+  .message p{ font-size: 13.5px; }
 }
