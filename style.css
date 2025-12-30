@@ -596,3 +596,44 @@ body::after{
   .chip-value{ font-size: 15px; }
   .age-caption{ letter-spacing: 5px; }
 }
+/* ===== Selector de idioma ===== */
+.langbar{
+  position:absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  display:flex;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(55,240,255,.22);
+  background: rgba(0,0,0,.22);
+  backdrop-filter: blur(10px);
+}
+
+.langbtn{
+  appearance:none;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(242,251,255,.88);
+  font-weight: 800;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  cursor:pointer;
+  letter-spacing: .6px;
+  transition: transform .15s ease, filter .15s ease, background .15s ease;
+}
+
+.langbtn:hover{ transform: translateY(-1px); }
+.langbtn.active{
+  border-color: rgba(55,240,255,.40);
+  background: rgba(55,240,255,.10);
+  filter: brightness(1.1);
+  box-shadow: 0 0 18px rgba(55,240,255,.12);
+}
+
+@media (max-width: 420px){
+  .langbar{ top: 10px; right: 10px; padding: 6px; }
+  .langbtn{ padding: 7px 9px; font-size: 11px; }
+}

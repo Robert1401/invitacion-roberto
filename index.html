@@ -26,8 +26,15 @@
     <div class="bg-glow"></div>
     <div class="frame"></div>
 
+    <!-- Selector idioma -->
+    <div class="langbar" aria-label="Selector de idioma">
+      <button class="langbtn" data-lang="es" type="button">ES</button>
+      <button class="langbtn" data-lang="en" type="button">EN</button>
+      <button class="langbtn" data-lang="zh" type="button">中文</button>
+    </div>
+
     <header class="top">
-      <div class="pill">INVITACIÓN ESPECIAL</div>
+      <div class="pill" data-i18n="pill">INVITACIÓN ESPECIAL</div>
       <div class="divider"></div>
     </header>
 
@@ -36,16 +43,15 @@
         <div class="age-badge" aria-hidden="true">👑</div>
         <div class="age-shadow">21</div>
         <div class="age">21</div>
-        <div class="age-caption">AÑOS</div>
+        <div class="age-caption" data-i18n="years">AÑOS</div>
       </div>
 
       <div class="name">Aram</div>
-      <div class="subtitle">Te invito a celebrar mi cumpleaños</div>
+      <div class="subtitle" data-i18n="subtitle">Te invito a celebrar mi cumpleaños</div>
     </section>
 
-    <!-- MENSAJE (rotador) -->
     <section class="message">
-      <p id="msg">
+      <p id="msg" data-i18n="message">
         Una fecha marcada, una noche para celebrar,<br />
         y personas especiales que no pueden faltar.<br />
         Te invito a compartir conmigo una celebración<br />
@@ -55,45 +61,127 @@
 
     <section class="chips">
       <div class="chip">
-        <span class="chip-label">DÍA</span>
-        <span class="chip-value">10 ENE 2026</span>
+        <span class="chip-label" data-i18n="dayLabel">DÍA</span>
+        <span class="chip-value" id="dateValue">10 ENE 2026</span>
       </div>
       <div class="chip">
-        <span class="chip-label">HORA</span>
-        <span class="chip-value">5:00 PM</span>
+        <span class="chip-label" data-i18n="timeLabel">HORA</span>
+        <span class="chip-value" id="timeValue">5:00 PM</span>
       </div>
     </section>
 
     <section class="place">
-      <div class="place-title">LUGAR</div>
+      <div class="place-title" data-i18n="placeLabel">LUGAR</div>
       <div class="place-box">
-        <div class="place-main">Atotonilco de Tula, Hidalgo</div>
-        <div class="place-sub">Con abuelita Andrea</div>
+        <div class="place-main" id="placeMain">Atotonilco de Tula, Hidalgo</div>
+        <div class="place-sub" id="placeSub" data-i18n="placeSub">Con abuelita Andrea</div>
       </div>
     </section>
 
     <footer class="bottom">
       <div class="divider"></div>
-      <div class="note">
+      <div class="note" data-i18n="footer">
         <strong>Dress code:</strong> cómodo / casual ✨
       </div>
     </footer>
 
   </main>
 
-  <!-- Rotador automático de frases (opcional, pero padre) -->
   <script>
-    const msgs = [
-      `Una fecha marcada, una noche para celebrar,<br/>y personas especiales que no pueden faltar.<br/>Te invito a compartir conmigo una celebración<br/>llena de luz, risas y buenos momentos.`,
-      `¡Es mi cumple! 🎉<br/>Ven a pasarla bien conmigo.<br/>Habrá buena vibra, risas y momentos chidos.<br/>No faltes ✨`,
-      `Tu presencia es el mejor regalo 🫶<br/>Vamos a celebrar juntos.<br/>Te espero para un rato bonito y familiar.<br/>Nos vemos ahí 🤍`,
-      `Noche especial, gente especial ✨<br/>Acompáñame a festejar mis 21.<br/>Un plan tranquilo, familiar y con cariño.<br/>¡Te espero!`
-    ];
-    let i = 0;
-    setInterval(() => {
-      i = (i + 1) % msgs.length;
-      document.getElementById("msg").innerHTML = msgs[i];
-    }, 3500);
+    // ====== Textos por idioma ======
+    const i18n = {
+      es: {
+        lang: "es",
+        title: "Invitación | Aram 21",
+        pill: "INVITACIÓN ESPECIAL",
+        years: "AÑOS",
+        subtitle: "Te invito a celebrar mi cumpleaños",
+        dayLabel: "DÍA",
+        timeLabel: "HORA",
+        placeLabel: "LUGAR",
+        placeMain: "Atotonilco de Tula, Hidalgo",
+        placeSub: "Con abuelita Andrea",
+        footer: "<strong>Dress code:</strong> cómodo / casual ✨",
+        message: `Una fecha marcada, una noche para celebrar,<br/>
+                  y personas especiales que no pueden faltar.<br/>
+                  Te invito a compartir conmigo una celebración<br/>
+                  llena de luz, risas y buenos momentos.`,
+        dateValue: "10 ENE 2026",
+        timeValue: "5:00 PM"
+      },
+      en: {
+        lang: "en",
+        title: "Invitation | Aram 21",
+        pill: "SPECIAL INVITATION",
+        years: "YEARS",
+        subtitle: "You're invited to celebrate my birthday",
+        dayLabel: "DATE",
+        timeLabel: "TIME",
+        placeLabel: "PLACE",
+        placeMain: "Atotonilco de Tula, Hidalgo",
+        placeSub: "With grandma Andrea",
+        footer: "<strong>Dress code:</strong> comfy / casual ✨",
+        message: `A special date, a night to celebrate,<br/>
+                  with people who truly matter.<br/>
+                  Come join me for a celebration<br/>
+                  full of lights, laughs and good vibes.`,
+        dateValue: "JAN 10, 2026",
+        timeValue: "5:00 PM"
+      },
+      zh: {
+        lang: "zh",
+        title: "邀请函 | Aram 21",
+        pill: "特别邀请",
+        years: "岁",
+        subtitle: "邀请你来参加我的生日聚会",
+        dayLabel: "日期",
+        timeLabel: "时间",
+        placeLabel: "地点",
+        placeMain: "Atotonilco de Tula, Hidalgo",
+        placeSub: "和外婆 Andrea 一起",
+        footer: "<strong>着装：</strong>舒适 / 休闲 ✨",
+        message: `一个特别的日子，一场庆祝的夜晚，<br/>
+                  重要的人当然不能缺席。<br/>
+                  诚邀你一起来参加我的生日聚会，<br/>
+                  充满灯光、欢笑与美好回忆。`,
+        dateValue: "2026年1月10日",
+        timeValue: "下午 5:00"
+      }
+    };
+
+    // ====== Aplicar idioma ======
+    function setLang(code){
+      const t = i18n[code] || i18n.es;
+
+      document.documentElement.lang = t.lang;
+      document.title = t.title;
+
+      // Textos por data-i18n
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+
+      // Campos específicos
+      document.getElementById("dateValue").textContent = t.dateValue;
+      document.getElementById("timeValue").textContent = t.timeValue;
+      document.getElementById("placeMain").textContent = t.placeMain;
+
+      // UI estado botones
+      document.querySelectorAll(".langbtn").forEach(b => {
+        b.classList.toggle("active", b.dataset.lang === code);
+      });
+
+      localStorage.setItem("lang", code);
+    }
+
+    // Click botones
+    document.querySelectorAll(".langbtn").forEach(btn => {
+      btn.addEventListener("click", () => setLang(btn.dataset.lang));
+    });
+
+    // Idioma recordado
+    setLang(localStorage.getItem("lang") || "es");
   </script>
 
 </body>
