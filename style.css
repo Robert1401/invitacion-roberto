@@ -637,3 +637,44 @@ body::after{
   .langbar{ top: 10px; right: 10px; padding: 6px; }
   .langbtn{ padding: 7px 9px; font-size: 11px; }
 }
+/* ===========================================================
+   ✅ RESPONSIVE PERFECTO (cel + compu) + ajustes por idioma
+   =========================================================== */
+
+@media (max-width: 600px){
+  body{ overflow:auto; }
+}
+
+.poster{
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Tip abajo */
+.hint{
+  margin-top: 10px;
+  font-size: 11.5px;
+  opacity: .75;
+  line-height: 1.35;
+}
+
+/* Ajustes finos en pantallas pequeñas */
+@media (max-width: 420px){
+  .poster{ width: 94vw; padding: 22px 16px 16px; }
+  .age{ font-size: 84px; }
+  .age-shadow{ font-size: 92px; }
+  .name{ font-size: 46px; }
+  .chips{ flex-wrap: wrap; }
+  .chip{ width: 100%; }
+  .message p{ font-size: 13.5px; }
+  .chip-value{ font-size: 15px; }
+  .age-caption{ letter-spacing: 5px; }
+}
+
+/* ====== Ajustes por idioma para que NO se rompa ====== */
+body[data-lang="en"] .subtitle{ letter-spacing: 1.6px; }
+body[data-lang="zh"] .subtitle{ letter-spacing: 1px; font-size: 12px; }
+body[data-lang="zh"] .message p{ font-size: 13.2px; line-height: 1.55; }
+body[data-lang="zh"] .chip-label{ letter-spacing: 1.5px; }
+body[data-lang="zh"] .age-caption{ letter-spacing: 3px; }
