@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Invitación | Aram 21</title>
 
-  <!-- ================== PREVIEW PARA WHATSAPP ================== -->
+  <!-- PREVIEW PARA WHATSAPP -->
   <meta property="og:title" content="Invitación | Aram 21" />
   <meta property="og:description" content="10 de enero 2026 • 5:00 PM • Atotonilco de Tula, Hidalgo (con abuelita Andrea). Toca para abrir la invitación ✨" />
   <meta property="og:type" content="website" />
@@ -15,11 +15,36 @@
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#37f0ff" />
-  <!-- =========================================================== -->
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- RSVP MODAL (sale una sola vez) -->
+  <div class="modal" id="rsvpModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rsvpTitle">
+      <div class="modal-top">
+        <div class="modal-badge">🎈</div>
+        <h2 id="rsvpTitle" data-i18n="rsvpTitle">¿Confirmas tu asistencia?</h2>
+        <p class="modal-sub" data-i18n="rsvpSub">
+          Escribe tu nombre y confirma. Solo se pide una vez.
+        </p>
+      </div>
+
+      <label class="field">
+        <span class="field-label" data-i18n="rsvpNameLabel">Tu nombre</span>
+        <input id="rsvpName" type="text" inputmode="text" autocomplete="name" placeholder="Ej. Juan Pérez" />
+      </label>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btnYes" type="button" data-i18n="rsvpYes">Confirmar ✅</button>
+        <button class="btn btn-ghost" id="btnNo" type="button" data-i18n="rsvpNo">No puedo 😢</button>
+      </div>
+
+      <div class="modal-foot" id="rsvpStatus" aria-live="polite"></div>
+      <div class="modal-hint" data-i18n="rsvpHint">Tip: si te equivocaste, borra el historial/localStorage del navegador.</div>
+    </div>
+  </div>
 
   <main class="poster" role="img" aria-label="Invitación de cumpleaños de Aram">
 
@@ -72,132 +97,24 @@
       </div>
     </section>
 
+    <!-- SOBRE (lluvia de sobres) -->
+    <section class="gift">
+      <div class="gift-title" data-i18n="giftTitle">REGALO</div>
+      <div class="gift-box">
+        <div class="gift-ico" aria-hidden="true">✉️</div>
+        <div class="gift-text" data-i18n="giftText">Si gustas, puedes traer un sobre 💛</div>
+      </div>
+    </section>
+
     <footer class="bottom">
       <div class="divider"></div>
       <div class="note" data-i18n="footer">
         <strong>Dress code:</strong> cómodo / casual ✨
       </div>
-
-      <div class="hint" data-i18n="hint">
-        Tip: abre este link en WhatsApp para ver la tarjetita (preview).
-      </div>
     </footer>
 
   </main>
 
-  <script>
-    // ================== i18n (ES / EN / ZH) ==================
-    const i18n = {
-      es: {
-        lang: "es",
-        title: "Invitación | Aram 21",
-        pill: "INVITACIÓN ESPECIAL",
-        years: "AÑOS",
-        subtitle: "Te invito a celebrar mi cumpleaños",
-        dayLabel: "DÍA",
-        timeLabel: "HORA",
-        placeLabel: "LUGAR",
-        placeMain: "Atotonilco de Tula, Hidalgo",
-        placeSub: "Con abuelita Andrea",
-        footer: "<strong>Dress code:</strong> cómodo / casual ✨",
-        hint: "Tip: abre este link en WhatsApp para ver la tarjetita (preview).",
-        message: `Una fecha marcada, una noche para celebrar,<br/>
-                  y personas especiales que no pueden faltar.<br/>
-                  Te invito a compartir conmigo una celebración<br/>
-                  llena de luz, risas y buenos momentos.`,
-        dateValue: "10 ENE 2026",
-        timeValue: "5:00 PM"
-      },
-      en: {
-        lang: "en",
-        title: "Invitation | Aram 21",
-        pill: "SPECIAL INVITATION",
-        years: "YEARS",
-        subtitle: "You're invited to celebrate my birthday",
-        dayLabel: "DATE",
-        timeLabel: "TIME",
-        placeLabel: "PLACE",
-        placeMain: "Atotonilco de Tula, Hidalgo",
-        placeSub: "With grandma Andrea",
-        footer: "<strong>Dress code:</strong> comfy / casual ✨",
-        hint: "Tip: open this link in WhatsApp to see the preview card.",
-        message: `A special date, a night to celebrate,<br/>
-                  with people who truly matter.<br/>
-                  Come join me for a celebration<br/>
-                  full of lights, laughs and good vibes.`,
-        dateValue: "JAN 10, 2026",
-        timeValue: "5:00 PM"
-      },
-      zh: {
-        lang: "zh",
-        title: "邀请函 | Aram 21",
-        pill: "特别邀请",
-        years: "岁",
-        subtitle: "邀请你来参加我的生日聚会",
-        dayLabel: "日期",
-        timeLabel: "时间",
-        placeLabel: "地点",
-        placeMain: "Atotonilco de Tula, Hidalgo",
-        placeSub: "和外婆 Andrea 一起",
-        footer: "<strong>着装：</strong>舒适 / 休闲 ✨",
-        hint: "提示：在 WhatsApp 打开链接可看到预览卡片。",
-        message: `一个特别的日子，一场庆祝的夜晚，<br/>
-                  重要的人当然不能缺席。<br/>
-                  诚邀你一起来参加我的生日聚会，<br/>
-                  充满灯光、欢笑与美好回忆。`,
-        dateValue: "2026年1月10日",
-        timeValue: "下午 5:00"
-      }
-    };
-
-    const order = ["es", "en", "zh"];
-    const CHANGE_EVERY_MS = 7000; // 7s (ajústalo si quieres)
-
-    function setLang(code){
-      const t = i18n[code] || i18n.es;
-
-      document.documentElement.lang = t.lang;
-      document.title = t.title;
-
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        if (t[key] !== undefined) el.innerHTML = t[key];
-      });
-
-      const dateEl = document.getElementById("dateValue");
-      const timeEl = document.getElementById("timeValue");
-      const placeMainEl = document.getElementById("placeMain");
-      if (dateEl) dateEl.textContent = t.dateValue;
-      if (timeEl) timeEl.textContent = t.timeValue;
-      if (placeMainEl) placeMainEl.textContent = t.placeMain;
-
-      // Ajustes finos para que chino/inglés se vean bien (sin romper layout)
-      document.body.dataset.lang = code;
-
-      localStorage.setItem("lang", code);
-    }
-
-    // 1) Si viene ?lang=es|en|zh, forzamos ese idioma
-    const params = new URLSearchParams(location.search);
-    const forced = params.get("lang");
-
-    // 2) Si no, intentamos con localStorage
-    let saved = localStorage.getItem("lang");
-
-    // 3) Si no hay nada, usamos español
-    let idx = order.indexOf(saved || "es");
-    if (idx < 0) idx = 0;
-
-    if (forced && i18n[forced]) {
-      setLang(forced);
-      // si forzas por url, no rotamos
-    } else {
-      setLang(order[idx]);
-      setInterval(() => {
-        idx = (idx + 1) % order.length;
-        setLang(order[idx]);
-      }, CHANGE_EVERY_MS);
-    }
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
