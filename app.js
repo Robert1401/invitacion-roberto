@@ -1,6 +1,6 @@
 // =============== CONFIG ===============
 const CHANGE_EVERY_MS = 7000; // 7s
-const RSVP_ENDPOINT = "https://formspree.io/f/XXXXXXXX"; // <-- pon tu URL real
+const RSVP_ENDPOINT = "https://formspree.io/f/abcdwxyz";
 const RSVP_KEY = "rsvp_aram21_done_v2";
 
 // =============== i18n ===============
