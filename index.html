@@ -7,13 +7,12 @@
 
   <!-- ================== PREVIEW PARA WHATSAPP ================== -->
   <meta property="og:title" content="Invitación | Aram 21" />
-  <meta property="og:description" content="10 • 5:00 PM • Atotonilco de Tula, Hidalgo (con abuelita). Toca para abrir la invitación ✨" />
+  <meta property="og:description" content="10 de enero 2026 • 5:00 PM • Atotonilco de Tula, Hidalgo (con abuelita Andrea). Toca para abrir la invitación ✨" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://robert1401.github.io/invitacion-roberto/" />
-<meta property="og:image" content="https://robert1401.github.io/invitacion-roberto/assets/preview.png" />
+  <meta property="og:image" content="https://robert1401.github.io/invitacion-roberto/assets/preview.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#37f0ff" />
   <!-- =========================================================== -->
@@ -22,32 +21,31 @@
 </head>
 <body>
 
-  <main class="poster" role="img" aria-label="Invitación de cumpleaños de Roberto">
+  <main class="poster" role="img" aria-label="Invitación de cumpleaños de Aram">
 
-    <!-- Brillos y marco -->
     <div class="bg-glow"></div>
     <div class="frame"></div>
 
-    <!-- Parte superior -->
     <header class="top">
       <div class="pill">INVITACIÓN ESPECIAL</div>
       <div class="divider"></div>
     </header>
 
-    <!-- HERO -->
     <section class="hero">
       <div class="age-wrap">
+        <div class="age-badge" aria-hidden="true">👑</div>
         <div class="age-shadow">21</div>
         <div class="age">21</div>
+        <div class="age-caption">AÑOS</div>
       </div>
 
       <div class="name">Aram</div>
       <div class="subtitle">Te invito a celebrar mi cumpleaños</div>
     </section>
 
-    <!-- MENSAJE -->
+    <!-- MENSAJE (rotador) -->
     <section class="message">
-      <p>
+      <p id="msg">
         Una fecha marcada, una noche para celebrar,<br />
         y personas especiales que no pueden faltar.<br />
         Te invito a compartir conmigo una celebración<br />
@@ -55,11 +53,10 @@
       </p>
     </section>
 
-    <!-- FECHA / HORA -->
     <section class="chips">
       <div class="chip">
         <span class="chip-label">DÍA</span>
-        <span class="chip-value">10</span>
+        <span class="chip-value">10 ENE 2026</span>
       </div>
       <div class="chip">
         <span class="chip-label">HORA</span>
@@ -67,24 +64,37 @@
       </div>
     </section>
 
-    <!-- LUGAR -->
     <section class="place">
       <div class="place-title">LUGAR</div>
       <div class="place-box">
         <div class="place-main">Atotonilco de Tula, Hidalgo</div>
-        <div class="place-sub">Con abuelita</div>
+        <div class="place-sub">Con abuelita Andrea</div>
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="bottom">
       <div class="divider"></div>
       <div class="note">
-        Celebrando mis <strong>21 años</strong> ✨
+        <strong>Dress code:</strong> cómodo / casual ✨
       </div>
     </footer>
 
   </main>
+
+  <!-- Rotador automático de frases (opcional, pero padre) -->
+  <script>
+    const msgs = [
+      `Una fecha marcada, una noche para celebrar,<br/>y personas especiales que no pueden faltar.<br/>Te invito a compartir conmigo una celebración<br/>llena de luz, risas y buenos momentos.`,
+      `¡Es mi cumple! 🎉<br/>Ven a pasarla bien conmigo.<br/>Habrá buena vibra, risas y momentos chidos.<br/>No faltes ✨`,
+      `Tu presencia es el mejor regalo 🫶<br/>Vamos a celebrar juntos.<br/>Te espero para un rato bonito y familiar.<br/>Nos vemos ahí 🤍`,
+      `Noche especial, gente especial ✨<br/>Acompáñame a festejar mis 21.<br/>Un plan tranquilo, familiar y con cariño.<br/>¡Te espero!`
+    ];
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % msgs.length;
+      document.getElementById("msg").innerHTML = msgs[i];
+    }, 3500);
+  </script>
 
 </body>
 </html>

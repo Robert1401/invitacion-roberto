@@ -554,3 +554,45 @@ body::after{
   .chip{ width: 100%; }
   .message p{ font-size: 13.5px; }
 }
+
+/* ====== Extra: sello 21 años (corona + caption) ====== */
+.age-wrap{ margin-top: 6px; }
+
+.age-badge{
+  position:absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  filter: drop-shadow(0 0 10px rgba(255,211,107,.35));
+  opacity: .95;
+}
+
+.age-caption{
+  margin-top: -8px;
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: rgba(242,251,255,.70);
+  text-shadow: 0 0 12px rgba(55,240,255,.15);
+}
+
+/* ====== Mensaje: transiciones suaves para el rotador ====== */
+.message p{
+  transition: opacity .35s ease, transform .35s ease;
+}
+
+/* ====== Footer: que se vea fino sin "celebrando..." ====== */
+.note{
+  letter-spacing: .3px;
+}
+
+/* ====== Chips: que no se corte “10 ENE 2026” ====== */
+.chip-value{
+  font-size: 16px; /* un poquito más chico */
+}
+
+/* ====== Mobile extra: que el texto no se apriete ====== */
+@media (max-width: 420px){
+  .chip-value{ font-size: 15px; }
+  .age-caption{ letter-spacing: 5px; }
+}
