@@ -1,5 +1,5 @@
 // =============== CONFIG ===============
-const CHANGE_EVERY_MS = 20000; // ✅ 20s para leer (cambia a 30000 si quieres 30s)
+const CHANGE_EVERY_MS = 120000; // 2 minutos
 const RSVP_ENDPOINT = "https://rsvp-worker.robertoa1401.workers.dev"; // tu worker
 const RSVP_KEY = "rsvp_aram21_done_v2"; // cambia si quieres reset global
 
