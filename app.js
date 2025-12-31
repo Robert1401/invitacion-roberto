@@ -1,7 +1,7 @@
 // =============== CONFIG ===============
-const CHANGE_EVERY_MS = 7000; // 7s
-const RSVP_ENDPOINT = "https://rsvp-worker.robertoa1401.workers.dev";
-const RSVP_KEY = "rsvp_aram21_done_v2";
+const CHANGE_EVERY_MS = 20000; // ✅ 20s para leer (cambia a 30000 si quieres 30s)
+const RSVP_ENDPOINT = "https://rsvp-worker.robertoa1401.workers.dev"; // tu worker
+const RSVP_KEY = "rsvp_aram21_done_v2"; // cambia si quieres reset global
 
 // =============== i18n ===============
 const i18n = {
@@ -108,6 +108,27 @@ const i18n = {
 
 const order = ["es", "en", "zh"];
 
+// =============== helpers ===============
+function $(id){ return document.getElementById(id); }
+
+function params(){
+  return new URLSearchParams(location.search);
+}
+
+function isModalOpen(){
+  return $("rsvpModal")?.classList.contains("show");
+}
+
+function currentLang(){
+  return (document.body.dataset.lang || localStorage.getItem("lang") || "es");
+}
+
+// ✅ modo test: si abres con ?test=1, NO bloquea el botón aunque ya haya confirmado
+function isTestMode(){
+  return params().get("test") === "1";
+}
+
+// =============== i18n ===============
 function setLang(code){
   const t = i18n[code] || i18n.es;
   document.documentElement.lang = t.lang;
@@ -118,9 +139,9 @@ function setLang(code){
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
 
-  const dateEl = document.getElementById("dateValue");
-  const timeEl = document.getElementById("timeValue");
-  const placeMainEl = document.getElementById("placeMain");
+  const dateEl = $("dateValue");
+  const timeEl = $("timeValue");
+  const placeMainEl = $("placeMain");
 
   if (dateEl) dateEl.textContent = t.dateValue;
   if (timeEl) timeEl.textContent = t.timeValue;
@@ -133,31 +154,31 @@ function setLang(code){
 }
 
 function bootLanguage(){
-  const params = new URLSearchParams(location.search);
-  const forced = params.get("lang");
+  const p = params();
+  const forced = p.get("lang"); // es/en/zh
   const saved = localStorage.getItem("lang");
+
   let idx = order.indexOf(saved || "es");
   if (idx < 0) idx = 0;
 
+  // ✅ si el usuario fuerza lang, se queda fijo (no rota)
   if (forced && i18n[forced]) {
     setLang(forced);
     return;
   }
 
   setLang(order[idx]);
+
   setInterval(() => {
+    // ✅ no rotar si modal abierto (para que lean y confirmen)
+    if (isModalOpen()) return;
+
     idx = (idx + 1) % order.length;
     setLang(order[idx]);
   }, CHANGE_EVERY_MS);
 }
 
 // =============== RSVP ===============
-function $(id){ return document.getElementById(id); }
-
-function currentLang(){
-  return (document.body.dataset.lang || localStorage.getItem("lang") || "es");
-}
-
 function openModal(){
   const modal = $("rsvpModal");
   if (!modal) return;
@@ -165,6 +186,7 @@ function openModal(){
   modal.setAttribute("aria-hidden", "false");
   setTimeout(() => $("rsvpName")?.focus(), 150);
 }
+
 function closeModal(){
   const modal = $("rsvpModal");
   if (!modal) return;
@@ -173,6 +195,8 @@ function closeModal(){
 }
 
 function alreadyDone(){
+  // ✅ en test mode, lo tratamos como NO confirmado para poder probar varias veces
+  if (isTestMode()) return false;
   return !!localStorage.getItem(RSVP_KEY);
 }
 
@@ -194,7 +218,9 @@ function renderConfirmedState(){
     btn.disabled = false;
     btn.style.opacity = "1";
     btn.style.cursor = "pointer";
-    note.textContent = "";
+    note.textContent = isTestMode()
+      ? "🧪 Modo prueba activo (?test=1): puedes confirmar varias veces."
+      : "";
   }
 }
 
@@ -209,10 +235,17 @@ async function sendRSVP(payload){
     body: JSON.stringify(payload)
   });
 
-  return { ok: res.ok };
+  // ✅ intenta leer respuesta por si quieres debug
+  let json = null;
+  try { json = await res.json(); } catch {}
+
+  return { ok: res.ok, status: res.status, json };
 }
 
 function markDone(data){
+  // ✅ en test mode NO guardamos bloqueo
+  if (isTestMode()) return;
+
   localStorage.setItem(RSVP_KEY, JSON.stringify({
     ...data,
     at: new Date().toISOString()
@@ -246,11 +279,15 @@ async function handleRSVP(attending){
   try{
     const result = await sendRSVP(payload);
 
-    markDone({ name, attending, lang, sent: !!result.ok });
+    if (!result.ok){
+      if (status) status.textContent = `${t.rsvpError} (HTTP ${result.status})`;
+      return;
+    }
+
+    markDone({ name, attending, lang, sent: true });
     if (status) status.textContent = attending ? t.rsvpThanksYes : t.rsvpThanksNo;
 
     renderConfirmedState();
-
     setTimeout(() => closeModal(), 900);
   } catch(e){
     if (status) status.textContent = t.rsvpError;
